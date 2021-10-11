@@ -1,0 +1,77 @@
+﻿@model List<PlayerList>
+
+<style>
+    th{
+        background-color:yellow
+    }
+</style>
+
+<form>
+    <div class="form-group">
+        <h5>下載功能</h5>
+        <a id="downloadBtn" href="#" class="btn btn-primary">啟動</a>
+        <img id="loadingLbl" src="~/loading.gif" height="40" style="display:none"/>
+    </div>
+    <br />
+    <div class="form-group">
+        <h5>資料結果</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="info">
+                    <th scope="col">Letter</th>
+                    <th scope="col">Player</th>
+                    <th scope="col">G</th>
+                    <th scope="col">PTS</th>
+                    <th scope="col">TRB</th>
+                    <th scope="col">AST</th>
+                    <th scope="col">FG(%)</th>
+                    <th scope="col">FG3(%)</th>
+                    <th scope="col">FT(%)</th>
+                    <th scope="col">eFG(%)</th>
+                    <th scope="col">PER</th>
+                    <th scope="col">WS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count > 0)
+                {
+                    foreach (var data in Model)
+                    {
+                        <tr style="background-color:white">
+                            <td>@data.Letter</td>
+                            <td>@data.Player</td>
+                            <td>@data.G</td>
+                            <td>@data.PTS</td>
+                            <td>@data.TRB</td>
+                            <td>@data.AST</td>
+                            <td>@data.FG</td>
+                            <td>@data.FG3</td>
+                            <td>@data.FT</td>
+                            <td>@data.EFG</td>
+                            <td>@data.PER</td>
+                            <td>@data.WS</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<script>
+    $("#downloadBtn").on("click", function (e) {
+        $("#loadingLbl").show();
+
+         $.ajax({
+            url: "@Url.Action("Download", "Home")",
+            success: function (response) {
+                if (response.Result) {
+                    location.reload();
+                }
+                else {
+                    alert(response.Message);
+                }
+            }
+        });
+    })
+</script>
